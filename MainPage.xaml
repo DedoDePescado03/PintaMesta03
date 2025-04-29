@@ -2,20 +2,29 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PintaMesta.MainPage">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="VerticalStackLayout" x:Key="Background">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark=White, Light=White}"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ScrollView>
         <VerticalStackLayout
             Padding="30,0"
+            Style="{StaticResource Background}"
             Spacing="25">
             <Image
-                Source="dotnet_bot.png"
+                Source="dinosaurio.png"
                 HeightRequest="185"
                 Aspect="AspectFit"
                 SemanticProperties.Description="dot net bot in a race car number eight" />
 
             <Label
-                Text="Hello, Gays!!!"
+                Text="Pinta.me sta"
                 Style="{StaticResource Headline}"
+                TextColor="Black"
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Label
