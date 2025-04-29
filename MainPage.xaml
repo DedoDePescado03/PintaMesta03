@@ -30,6 +30,13 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
+
+            <Button
+                x:Name="DrawBtn"
+                Text="Click to start drawing" 
+                SemanticProperties.Hint="Navigates to the drawing page"
+                Clicked="MoveToDrawPage"
+                HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
 
