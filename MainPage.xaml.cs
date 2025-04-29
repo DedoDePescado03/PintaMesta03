@@ -23,7 +23,6 @@ namespace PintaMesta
 
             SemanticScreenReader.Announce(CounterBtn.Text);
         }*/
-        }
 
         private async void MoveToDrawPage(object sender, EventArgs e)
         {

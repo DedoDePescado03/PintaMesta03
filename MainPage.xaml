@@ -16,14 +16,16 @@
             Padding="70,0"
             Style="{StaticResource Background}"
             Spacing="50">
-            
-            <Label
-                Text="P nta.me&#10;sta"
-                Style="{StaticResource Headline}"
-                TextColor="Black"
-                SemanticProperties.HeadingLevel="Level1" />
 
-            <Image Source="logo.png"/>
+            <HorizontalStackLayout Margin="0">
+                <Label Text="P" FontSize="50" />
+                <Image Source="logo.png"
+                    WidthRequest="100"
+                    HeightRequest="100"
+                    Rotation="75"
+                    VerticalOptions="Center"/>
+                <Label Text="nta.me&#10;sta" FontSize="50" />
+            </HorizontalStackLayout>
 
             <Image
                 Source="dinosaurio.png"
@@ -33,6 +35,7 @@
 
             <Button
                 x:Name="PlayGuest"
+                Clicked="MoveToDrawPage"
                 Text="Jugar como invitado" 
                 SemanticProperties.Hint="Juega casi instantaneamente"
                 HorizontalOptions="Fill" />
@@ -42,13 +45,6 @@
                 Text="Iniciar Sesión" 
                 SemanticProperties.Hint="Iniciar sesión con un correo registrado"
                 HorizontalOptions="Fill" />
-
-            <!--<Button
-                x:Name="CounterBtn"
-                Text="Clicks" 
-                SemanticProperties.Hint="Click counter"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />-->
         </VerticalStackLayout>
     </ScrollView>
 
