@@ -33,6 +33,7 @@
 
             <Button
                 x:Name="PlayGuest"
+                Clicked="MoveToDrawPage"
                 Text="Jugar como invitado" 
                 SemanticProperties.Hint="Juega casi instantaneamente"
                 HorizontalOptions="Fill" />
@@ -42,13 +43,6 @@
                 Text="Iniciar Sesión" 
                 SemanticProperties.Hint="Iniciar sesión con un correo registrado"
                 HorizontalOptions="Fill" />
-
-            <!--<Button
-                x:Name="CounterBtn"
-                Text="Clicks" 
-                SemanticProperties.Hint="Click counter"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />-->
         </VerticalStackLayout>
     </ScrollView>
 
