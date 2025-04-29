@@ -1,4 +1,6 @@
-﻿namespace PintaMesta
+﻿using System.Runtime.InteropServices;
+
+namespace PintaMesta
 {
     public partial class MainPage : ContentPage
     {
@@ -21,8 +23,13 @@
 
             SemanticScreenReader.Announce(CounterBtn.Text);
         }*/
+        }
+
+        private async void MoveToDrawPage(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(DrawingPage));
+        }
+
     }
-
-
 
 }
