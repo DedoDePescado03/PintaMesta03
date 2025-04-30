@@ -13,13 +13,13 @@
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="70,0"
+            Padding="60,0"
             Style="{StaticResource Background}"
             Spacing="50">
 
             <HorizontalStackLayout Margin="0">
                 <Label Text="P" FontSize="50" />
-                <Image Source="logo.png"
+                <Image Source="newlogo.png"
                     WidthRequest="100"
                     HeightRequest="100"
                     Rotation="75"
