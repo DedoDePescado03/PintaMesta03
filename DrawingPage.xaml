@@ -3,28 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-             x:Class="PintaMesta.DrawingPage"
-             Title="DrawingPage">
-    
+             x:Class="PintaMesta.DrawingPage">
+
     <VerticalStackLayout>
         <Label 
-            Text="Draw!"
-            VerticalOptions="Center" 
+            FontSize="Large"
+            Margin="-6"
+            Text="Flores"
+            VerticalOptions="Start" 
             HorizontalOptions="Center" />
 
-        <mct:DrawingView
+        <HorizontalStackLayout Padding="10">
+            <mct:DrawingView
             x:Name="DrawBoard"
-            BackgroundColor="White"
+            BackgroundColor="LightGrey"
             IsMultiLineModeEnabled="True"
-            WidthRequest="300"
-            HeightRequest="200"
+            WidthRequest="600"
+            HeightRequest="260"
             HorizontalOptions="Center" />
 
-        <Button
+            <Button
             x:Name="ClrBtn"
             WidthRequest="100"
+            HeightRequest="35"
             BackgroundColor="Red"
             Text="Clear" 
-            Clicked="ClearDrawingView" />
+            Clicked="ClearDrawingView"
+            VerticalOptions="Start"
+            HorizontalOptions="End"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
