@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PintaMesta.LoginPage"
+             Title="Iniciar Sesión">
+    <VerticalStackLayout
+        Padding="0,180">
+
+        <Label
+                Text="Correo" 
+                HorizontalOptions="Center"/>
+
+        <HorizontalStackLayout Padding="100,10,0,0">
+
+            <Entry
+                x:Name="emailLogin"
+                WidthRequest="170"
+                HorizontalOptions="Center"/>
+
+        </HorizontalStackLayout>
+
+        <Label
+                Text="Contraseña"
+                HorizontalOptions="Center"/>
+
+        <HorizontalStackLayout Padding="100,10,0,0">
+
+            <Entry
+                x:Name="passwordLogin"
+                WidthRequest="170"
+                VerticalOptions="Center"/>
+
+        </HorizontalStackLayout>
+
+        <Label
+            HorizontalOptions="Center"
+            Padding="0,30">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="¿No tienes una cuenta? " />
+                    <Span Text="Regístrate"
+                          TextDecorations="Underline"
+                          TextColor="Blue">
+                        <Span.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="GoToRegister" />
+                        </Span.GestureRecognizers>
+                    </Span>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+
+        <Button
+            Text="Iniciar Sesión"
+            Clicked="LoginUser"
+            HorizontalOptions="Center"/>
+
+    </VerticalStackLayout>
+</ContentPage>

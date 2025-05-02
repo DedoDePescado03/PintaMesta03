@@ -30,12 +30,11 @@
             <Image
                 Source="dinosaurio.png"
                 HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+                Aspect="AspectFit" />
 
             <Button
                 x:Name="PlayGuest"
-                Clicked="MoveToDrawPage"
+                Clicked="GoToDrawPage"
                 Text="Jugar como invitado" 
                 SemanticProperties.Hint="Juega casi instantaneamente"
                 HorizontalOptions="Fill" />
@@ -43,6 +42,7 @@
             <Button
                 x:Name="Login"
                 Text="Iniciar Sesión" 
+                Clicked="GoToLogin"
                 SemanticProperties.Hint="Iniciar sesión con un correo registrado"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>

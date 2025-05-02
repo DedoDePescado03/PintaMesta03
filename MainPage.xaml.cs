@@ -14,9 +14,14 @@ namespace PintaMesta
             InitializeSupabase();
         }
 
-        private async void MoveToDrawPage(object sender, EventArgs e)
+        private async void GoToDrawPage(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(DrawingPage));
+        }
+
+        private async void GoToLogin(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(LoginPage));
         }
 
         private async void InitializeSupabase()
