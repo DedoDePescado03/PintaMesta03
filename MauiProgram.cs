@@ -1,5 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using PintaMesta.Services;
+
+#if ANDROID
+using PintaMesta.Platforms.Android;
+#endif
+
+#if IOS
+using PintaMesta.Platforms.iOS;
+#endif
 
 namespace PintaMesta
 {
@@ -8,6 +17,7 @@ namespace PintaMesta
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
@@ -18,10 +28,21 @@ namespace PintaMesta
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+#if ANDROID
+            builder.Services.AddSingleton<IOrientationService, OrientationService>();
+#endif
+
+#if IOS
+            builder.Services.AddSingleton<IOrientationService, OrientationService>();
+#endif
+
+            var mauiApp = builder.Build();
+
+            // Pass the service provider to App after building the MauiApp
+            return mauiApp;
         }
     }
 }

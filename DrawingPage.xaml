@@ -31,6 +31,25 @@
             Clicked="ClearDrawingView"
             VerticalOptions="Start"
             HorizontalOptions="End"/>
+
+            <Grid Padding="10" ColumnSpacing="10" RowSpacing="10" HorizontalOptions="Start" VerticalOptions="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button BackgroundColor="Red" Clicked="ChangeColor" CommandParameter="Red" WidthRequest="30" HeightRequest="30" />
+                <Button BackgroundColor="Green" Clicked="ChangeColor" CommandParameter="Green" WidthRequest="30" HeightRequest="30" />
+                <Button BackgroundColor="Blue" Clicked="ChangeColor" CommandParameter="Blue" WidthRequest="30" HeightRequest="30" />
+                <Button BackgroundColor="Yellow" Clicked="ChangeColor" CommandParameter="Yellow" WidthRequest="30" HeightRequest="30" />
+                <Button BackgroundColor="Black" Clicked="ChangeColor" CommandParameter="Black" WidthRequest="30" HeightRequest="30" />
+                <Button BackgroundColor="Purple" Clicked="ChangeColor" CommandParameter="Purple" WidthRequest="30" HeightRequest="30" />
+            </Grid>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

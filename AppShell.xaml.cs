@@ -1,8 +1,10 @@
-﻿namespace PintaMesta
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace PintaMesta
 {
     public partial class AppShell : Shell
     {
-        public AppShell()
+        public AppShell(IServiceProvider services)
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(DrawingPage), typeof(DrawingPage));

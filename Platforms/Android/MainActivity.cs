@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using PintaMesta.Services;
 
 namespace PintaMesta
 {
@@ -8,4 +9,5 @@ namespace PintaMesta
     public class MainActivity : MauiAppCompatActivity
     {
     }
+
 }
