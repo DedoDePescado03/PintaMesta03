@@ -22,34 +22,54 @@
             HeightRequest="260"
             HorizontalOptions="Center" />
 
-            <Button
-            x:Name="ClrBtn"
-            WidthRequest="100"
-            HeightRequest="35"
-            BackgroundColor="Red"
-            Text="Clear" 
-            Clicked="ClearDrawingView"
-            VerticalOptions="Start"
-            HorizontalOptions="End"/>
+            <VerticalStackLayout>
+                <Button Margin="10"
+                    x:Name="ClrBtn"
+                    WidthRequest="100"
+                    HeightRequest="35"
+                    BackgroundColor="Red"
+                    Text="Clear" 
+                    Clicked="ClearDrawingView"
+                    VerticalOptions="Start"
+                    HorizontalOptions="End"/>
 
-            <Grid Padding="10" ColumnSpacing="10" RowSpacing="10" HorizontalOptions="Start" VerticalOptions="Start">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <Grid Padding="10" ColumnSpacing="10" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button BackgroundColor="Red" Clicked="ChangeColor" CommandParameter="Red" WidthRequest="30" HeightRequest="30" />
-                <Button BackgroundColor="Green" Clicked="ChangeColor" CommandParameter="Green" WidthRequest="30" HeightRequest="30" />
-                <Button BackgroundColor="Blue" Clicked="ChangeColor" CommandParameter="Blue" WidthRequest="30" HeightRequest="30" />
-                <Button BackgroundColor="Yellow" Clicked="ChangeColor" CommandParameter="Yellow" WidthRequest="30" HeightRequest="30" />
-                <Button BackgroundColor="Black" Clicked="ChangeColor" CommandParameter="Black" WidthRequest="30" HeightRequest="30" />
-                <Button BackgroundColor="Purple" Clicked="ChangeColor" CommandParameter="Purple" WidthRequest="30" HeightRequest="30" />
-            </Grid>
+                    <Button Grid.Row="0" Grid.Column="0" BackgroundColor="Red" Clicked="ChangeColor" CommandParameter="Red" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="0" Grid.Column="1" BackgroundColor="Green" Clicked="ChangeColor" CommandParameter="Green" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="0" Grid.Column="2" BackgroundColor="Blue" Clicked="ChangeColor" CommandParameter="Blue" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="1" Grid.Column="0" BackgroundColor="Yellow" Clicked="ChangeColor" CommandParameter="Yellow" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Orange" Clicked="ChangeColor" CommandParameter="Orange" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="1" Grid.Column="2" BackgroundColor="Black" Clicked="ChangeColor" CommandParameter="Black" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="2" Grid.Column="0" BackgroundColor="Purple" Clicked="ChangeColor" CommandParameter="Purple" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="2" Grid.Column="1" BackgroundColor="Pink" Clicked="ChangeColor" CommandParameter="Pink" WidthRequest="30" HeightRequest="30" />
+                    <Button Grid.Row="2" Grid.Column="2" BackgroundColor="Brown" Clicked="ChangeColor" CommandParameter="Brown" WidthRequest="30" HeightRequest="30" />
+                </Grid>
+
+                <Slider x:Name="LineWidthSlider"
+                    Minimum="1"
+                    Maximum="20"
+                    Value="5"
+                    ValueChanged="LineWidthSlider_ValueChanged"
+                    HorizontalOptions="FillAndExpand"
+                    Margin="10" />
+
+                <Label x:Name="LineWidthLabel"
+                   Text="Grosor de linea: 5"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,5" />
+            </VerticalStackLayout>
+            
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

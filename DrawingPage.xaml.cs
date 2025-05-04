@@ -45,8 +45,22 @@ public partial class DrawingPage : ContentPage
                 "Yellow" => Colors.Yellow,
                 "Black" => Colors.Black,
                 "Purple" => Colors.Purple,
+                "Orange" => Colors.Orange,
+                "Pink" => Colors.Pink,
+                "Brown" => Colors.Brown,
                 _ => DrawBoard.LineColor
             };
+        }
+    }
+
+    private void LineWidthSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+    {
+        if (DrawBoard != null)
+        {
+            DrawBoard.LineWidth = (float)e.NewValue;
+
+            if (LineWidthLabel != null)
+                LineWidthLabel.Text = $"Grosor de linea: {e.NewValue:F1}";
         }
     }
 }
