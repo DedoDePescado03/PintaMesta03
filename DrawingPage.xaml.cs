@@ -2,14 +2,28 @@ namespace PintaMesta;
 using PintaMesta.Services;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using System;
+using System.Collections.Generic;
 
-public partial class DrawingPage : ContentPage
+public partial class DrawingPage : ContentPage, IQueryAttributable
 {
     private IOrientationService _orientationService;
 
     public DrawingPage()
     {
         InitializeComponent();
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.TryGetValue("word", out var wordObj) && wordObj is string word)
+        {
+            CurrentWordLabel.Text = $"Dibuja: {Uri.UnescapeDataString(word)}";
+        }
+        else
+        {
+            CurrentWordLabel.Text = "No se recibió una palabra.";
+        }
     }
 
     protected override void OnAppearing()

@@ -9,6 +9,26 @@ namespace PintaMesta
 {
     public partial class MainPage : ContentPage
     {
+        private static readonly List<string> WordList = new List<string>
+        {
+            "Silla", "Mesa", "Lámpara", "Reloj", "Cuchara", "Paraguas", "Mochila", "Televisor", "Celular", "Cepillo",
+            "Lentes", "Balón", "Maleta", "Piano", "Espejo", "Taza", "Ventana", "Puerta", "Camiseta", "Zapato",
+
+            "Perro", "Gato", "Elefante", "León", "Pez", "Tiburón", "Águila", "Conejo", "Serpiente", "Tortuga",
+            "Delfín", "Rana", "Pato", "Cangrejo", "Ratón", "Oveja", "Vaca", "Caballo", "Jirafa", "Cebra",
+
+            "Árbol", "Flor", "Sol", "Luna", "Nube", "Estrella", "Montaña", "Río", "Lago", "Roca",
+            "Nieve", "Lluvia", "Arena", "Volcán", "Isla",
+
+            "Refrigerador", "Microondas", "Sofá", "Cama", "Almohada", "Lavadora", "Cortina", "Alfombra", "Estufa", "Telefono fijo",
+
+            "Auto", "Bicicleta", "Moto", "Camión", "Barco", "Avión", "Helicóptero", "Tren", "Cohete", "Tractor",
+
+            "Manzana", "Plátano", "Pizza", "Helado", "Pan", "Huevo", "Sandía", "Hamburguesa", "Zanahoria", "Uvas",
+
+            "Fantasma", "Payaso", "Globo", "Regalo", "Robot", "Sombrero", "Juguete", "Muñeca", "Espada", "Corona",
+            "Dragón", "Sirena", "Ovni", "Calavera", "Castillo"
+        };
 
         public MainPage()
         {
@@ -21,36 +41,38 @@ namespace PintaMesta
             IsLoggedIn();
         }
 
+        private async Task AnimateButton(Button button)
+        {
+            await button.ScaleTo(1.1, 100, Easing.CubicIn);
+            await button.ScaleTo(1.0, 100, Easing.CubicOut);
+        }
+
         private async void GoToDrawPage(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(DrawingPage));
+            var button = (Button)sender;
+            await AnimateButton(button);
+
+            string word = GetRandomWord();
+            await Shell.Current.GoToAsync($"{nameof(DrawingPage)}?word={Uri.EscapeDataString(word)}");
         }
 
         private async void GoToLogin(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await AnimateButton(button);
+
             await Shell.Current.GoToAsync(nameof(LoginPage));
         }
 
-        private string GenerateCode(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        private static string GenerateUuid()
-        {
-            return Guid.NewGuid().ToString();
-        }
-
-
         private async void CreateASession(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await AnimateButton(button);
+
             var client = SupabaseClientService.SupabaseClient;
             var user = client.Auth.CurrentUser;
 
-            if(user == null)
+            if (user == null)
             {
                 await DisplayAlert("Error", "Primero tienes que iniciar sesión", "Ok");
                 return;
@@ -65,7 +87,7 @@ namespace PintaMesta
                 HostUserId = user.Id,
                 DrawerUserId = user.Id,
                 CreatedAt = DateTime.Now,
-                CurrentWord = "Popo",
+                CurrentWord = GetRandomWord(),
             };
 
             try
@@ -94,7 +116,26 @@ namespace PintaMesta
                 Debug.WriteLine($"Session failed: {ex}");
                 await DisplayAlert("Error", ex.Message, "Ok");
             }
+        }
 
+        private string GenerateCode(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private static string GenerateUuid()
+        {
+            return Guid.NewGuid().ToString();
+        }
+
+        private string GetRandomWord()
+        {
+            var random = new Random();
+            int index = random.Next(WordList.Count);
+            return WordList[index];
         }
 
         private void IsLoggedIn()
@@ -102,12 +143,10 @@ namespace PintaMesta
             var client = SupabaseClientService.SupabaseClient;
             var user = client.Auth.CurrentUser;
 
-            if(user != null)
+            if (user != null)
             {
                 Login.IsVisible = false;
             }
         }
-
     }
-
 }

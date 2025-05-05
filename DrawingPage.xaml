@@ -6,21 +6,22 @@
              x:Class="PintaMesta.DrawingPage">
 
     <VerticalStackLayout>
+
         <Label 
-            FontSize="Large"
-            Margin="-6"
-            Text="Flores"
-            VerticalOptions="Start" 
-            HorizontalOptions="Center" />
+            x:Name="CurrentWordLabel"
+            FontSize="Medium"
+            Margin="0,0,0,10"
+            HorizontalOptions="Center" 
+            FontFamily="Jersey10"/>
 
         <HorizontalStackLayout Padding="10">
             <mct:DrawingView
-            x:Name="DrawBoard"
-            BackgroundColor="LightGrey"
-            IsMultiLineModeEnabled="True"
-            WidthRequest="600"
-            HeightRequest="260"
-            HorizontalOptions="Center" />
+                x:Name="DrawBoard"
+                BackgroundColor="LightGrey"
+                IsMultiLineModeEnabled="True"
+                WidthRequest="600"
+                HeightRequest="260"
+                HorizontalOptions="Center" />
 
             <VerticalStackLayout>
                 <Button Margin="10"
@@ -28,7 +29,8 @@
                     WidthRequest="100"
                     HeightRequest="35"
                     BackgroundColor="Red"
-                    Text="Clear" 
+                    Text="Clear"
+                    FontFamily="Jersey10"
                     Clicked="ClearDrawingView"
                     VerticalOptions="Start"
                     HorizontalOptions="End"/>
@@ -67,9 +69,9 @@
                 <Label x:Name="LineWidthLabel"
                    Text="Grosor de linea: 5"
                    HorizontalOptions="Center"
-                   Margin="0,0,0,5" />
+                   Margin="0,0,0,5" 
+                   FontFamily="Jersey10"/>
             </VerticalStackLayout>
-            
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

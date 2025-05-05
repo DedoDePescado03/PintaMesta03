@@ -6,7 +6,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="VerticalStackLayout" x:Key="Background">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark=Red, Light=White}"></Setter>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark=White, Light=White}"></Setter>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -15,16 +15,16 @@
         <VerticalStackLayout
             Padding="60,0"
             Style="{StaticResource Background}"
-            Spacing="50">
-
-            <HorizontalStackLayout Margin="0">
-                <Label Text="P" FontSize="50" />
+            Spacing="40">
+            
+            <HorizontalStackLayout Margin="30">
+                <Label Text="P" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
                 <Image Source="newlogo.png"
-                    WidthRequest="100"
-                    HeightRequest="100"
+                    WidthRequest="70"
+                    HeightRequest="70"
                     Rotation="75"
                     VerticalOptions="Center"/>
-                <Label Text="nta.me&#10;sta" FontSize="50" />
+                <Label Text="nta.me&#10;sta" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
             </HorizontalStackLayout>
 
             <Image
@@ -36,21 +36,24 @@
                 x:Name="PlayGuest"
                 Clicked="GoToDrawPage"
                 Text="Dibujar" 
-                SemanticProperties.Hint="Juega casi instantaneamente"
+                FontFamily="Jersey10"
+                FontSize="25"
                 HorizontalOptions="Fill" />
             
             <Button
                  x:Name="CreateSession"
                  Clicked="CreateASession"
                  Text="Crear Sesión" 
-                 SemanticProperties.Hint="Juega casi instantaneamente"
+                 FontFamily="Jersey10"
+                 FontSize="25"
                  HorizontalOptions="Fill" />
 
             <Button
                 x:Name="Login"
                 Text="Iniciar Sesión" 
+                FontFamily="Jersey10"
+                FontSize="25"
                 Clicked="GoToLogin"
-                SemanticProperties.Hint="Iniciar sesión con un correo registrado"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
