@@ -33,7 +33,7 @@ public partial class LoginPage : ContentPage
 
 			if(session != null && session.User != null)
 			{
-				await Shell.Current.GoToAsync(nameof(DrawingPage));
+				await Shell.Current.GoToAsync("///MainPage");
 			}
 			else
 			{

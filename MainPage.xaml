@@ -35,9 +35,16 @@
             <Button
                 x:Name="PlayGuest"
                 Clicked="GoToDrawPage"
-                Text="Jugar como invitado" 
+                Text="Dibujar" 
                 SemanticProperties.Hint="Juega casi instantaneamente"
                 HorizontalOptions="Fill" />
+            
+            <Button
+                 x:Name="CreateSession"
+                 Clicked="CreateASession"
+                 Text="Crear Sesión" 
+                 SemanticProperties.Hint="Juega casi instantaneamente"
+                 HorizontalOptions="Fill" />
 
             <Button
                 x:Name="Login"
