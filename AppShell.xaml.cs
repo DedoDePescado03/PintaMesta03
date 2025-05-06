@@ -12,6 +12,7 @@ namespace PintaMesta
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(LobbyPage), typeof(LobbyPage));
+            Routing.RegisterRoute(nameof(JoinSessionPage), typeof(JoinSessionPage));
         }
     }
 }
