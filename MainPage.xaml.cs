@@ -4,6 +4,7 @@ using Supabase.Postgrest.Models;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PintaMesta.Models;
+using PintaMesta.Services;
 
 namespace PintaMesta
 {
