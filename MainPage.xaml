@@ -19,34 +19,67 @@
             
             <HorizontalStackLayout Margin="30">
                 <Label Text="P" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
-                <Image Source="newlogo.png"
+                <Image
+                    x:Name="logoImage"
+                    Source="newlogo.png"
                     WidthRequest="70"
                     HeightRequest="70"
                     Rotation="75"
+                    TranslationY="-130"
                     VerticalOptions="Center"/>
                 <Label Text="nta.me&#10;sta" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
             </HorizontalStackLayout>
 
             <Image
+                x:Name="dinoImage"
                 Source="dinosaurio.png"
-                HeightRequest="185"
-                Aspect="AspectFit" />
+                HeightRequest="110"
+                Aspect="AspectFit"
+                HorizontalOptions="Start"
+                Rotation="340" 
+                TranslationX="-230"
+                />
 
             <Button
                 x:Name="PlayGuest"
                 Clicked="GoToDrawPage"
-                Text="Dibujar" 
+                Text="Dibujar"
                 FontFamily="Jersey10"
                 FontSize="25"
-                HorizontalOptions="Fill" />
-            
+                CornerRadius="25"
+                BorderWidth="-100"
+                HorizontalOptions="Fill">
+                            <Button.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#F23CF2" Offset="0.2" />
+                                    <GradientStop Color="#D33FFE" Offset="0.4" />
+                                    <GradientStop Color="#AD46FF" Offset="0.6" />
+                                    <GradientStop Color="#7B4FFF" Offset="0.8" />
+                                    <GradientStop Color="#0058FF" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Button.Background>
+
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#80000000"
+                        Offset="4,4"
+                        Radius="5"
+                        Opacity="0.6"
+                        />
+                </Button.Shadow>
+
+            </Button>
+
+
             <Button
                  x:Name="CreateSession"
                  Clicked="CreateASession"
                  Text="Crear Sesión" 
                  FontFamily="Jersey10"
                  FontSize="25"
-                 HorizontalOptions="Fill" />
+                 HorizontalOptions="Fill" 
+                 BackgroundColor="#AAFFFFFF"
+                />
 
             <Button
                 x:Name="Join"

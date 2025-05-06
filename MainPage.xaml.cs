@@ -39,13 +39,27 @@ namespace PintaMesta
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             IsLoggedIn();
 
             _orientationService = App.Services.GetRequiredService<IOrientationService>();
             _orientationService.ForcePortrait();
+
+            string[] frames = { "dinosaurio.png", "dinosaurio2.png" };
+            int currentFrame = 0;
+
+            await dinoImage.TranslateTo(0, 0, 1500, Easing.BounceOut);
+            await logoImage.TranslateTo(0, 0, 1500, Easing.BounceOut);
+
+            Device.StartTimer(TimeSpan.FromSeconds(0.5), () =>
+            {
+                currentFrame = (currentFrame + 1) % frames.Length;
+                dinoImage.Source = frames[currentFrame];
+                return true;
+            });
+
         }
 
         private async Task AnimateButton(Button button)
