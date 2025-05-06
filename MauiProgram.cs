@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
 using PintaMesta.Services;
+using Plugin.Maui.Audio;
 
 #if ANDROID
 using PintaMesta.Platforms.Android;
@@ -27,6 +28,9 @@ namespace PintaMesta
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("Jersey10-Regular.ttf", "Jersey10");
                 });
+
+            builder.Services.AddSingleton(AudioManager.Current);
+            builder.Services.AddTransient<MainPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

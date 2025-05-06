@@ -4,6 +4,7 @@ using Supabase.Postgrest.Models;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PintaMesta.Models;
+using Plugin.Maui.Audio;
 
 namespace PintaMesta
 {
@@ -43,8 +44,8 @@ namespace PintaMesta
 
         private async Task AnimateButton(Button button)
         {
-            await button.ScaleTo(1.1, 100, Easing.CubicIn);
-            await button.ScaleTo(1.0, 100, Easing.CubicOut);
+            await button.ScaleTo(1.1, 100, Easing.SpringIn);
+            await button.ScaleTo(1.0, 100, Easing.SpringOut);
         }
 
         private async void GoToDrawPage(object sender, EventArgs e)
