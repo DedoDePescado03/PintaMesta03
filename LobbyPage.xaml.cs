@@ -1,29 +1,32 @@
 namespace PintaMesta;
 
 using PintaMesta.Models;
-using Supabase;
 using System.Diagnostics;
-using System.Text.Json.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.ObjectModel;
+using System.Timers;
 
 public partial class LobbyPage : ContentPage, IQueryAttributable
 {
+    private string _sessionId;
+    private Timer _updateTimer;
+    private ObservableCollection<string> _usernames = new();
     public LobbyPage()
     {
         InitializeComponent();
+        PlayersListView.ItemsSource = _usernames;
     }
 
     public async void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.ContainsKey("sessionId"))
         {
-            var sessionId = query["sessionId"] as string;
+            _sessionId = query["sessionId"] as string;
 
             var client = SupabaseClientService.SupabaseClient;
 
             try
             {
-                var sessionResponse = await client.From<Session>().Where(s => s.Id == sessionId).Get();
+                var sessionResponse = await client.From<Session>().Where(s => s.Id == _sessionId).Get();
                 var session = sessionResponse.Models.FirstOrDefault();
 
                 var hostUsernameResponse = await client.From<Profile>().Where(s => s.Id == session.HostUserId).Get();
@@ -33,7 +36,7 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
                 {
                     SessionCodeLabel.Text = $"Código de sesión: {session.Code}";
                     SessionName.Text = $"Sesión de {hostUsername.Username}";
-                    // Agrega más elementos aquí si quieres mostrar la palabra actual, el host, etc.
+                    StartPlayerUpdates();
                 }
                 else
                 {
@@ -47,4 +50,47 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
             }
         }
     }
+
+    private void StartPlayerUpdates()
+    {
+        _updateTimer = new Timer(500);
+        _updateTimer.Elapsed += async (sender, e) => await LoadPlayers();
+        _updateTimer.AutoReset = true;
+        _updateTimer.Enabled = true;
+    }
+
+    private async Task LoadPlayers()
+    {
+        var client = SupabaseClientService.SupabaseClient;
+
+        try
+        {
+            var playerResponse = await client.From<SessionPlayer>().Where(sp => sp.SessionId == _sessionId).Get();
+            var playerIds = playerResponse.Models.Select(p => p.UserId).ToList();
+
+            var profileResponse = await client.From<Profile>().Filter("id", Supabase.Postgrest.Constants.Operator.In, playerIds).Get();
+            var usernames = profileResponse.Models.Select(u => u.Username).ToList();
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _usernames.Clear();
+                foreach (var username in usernames)
+                {
+                    _usernames.Add(username);
+                }
+            });
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine($"Error al agregar jugadores: {ex}");
+        }
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _updateTimer?.Stop();
+        _updateTimer?.Dispose();
+    }
+
 }
