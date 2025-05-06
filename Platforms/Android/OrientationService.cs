@@ -9,13 +9,19 @@ namespace PintaMesta.Platforms.Android
         public void ForceLandscape()
         {
             var activity = Platform.CurrentActivity;
-            activity.RequestedOrientation = ScreenOrientation.Landscape;
+            activity.RequestedOrientation = ScreenOrientation.SensorLandscape;
         }
 
         public void AllowOrientations()
         {
             var activity = Platform.CurrentActivity;
             activity.RequestedOrientation = ScreenOrientation.Unspecified;
+        }
+
+        public void ForcePortrait()
+        {
+            var activity = Platform.CurrentActivity;
+            activity.RequestedOrientation = ScreenOrientation.Portrait;
         }
 
     }

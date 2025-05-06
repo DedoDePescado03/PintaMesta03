@@ -49,6 +49,14 @@
                  HorizontalOptions="Fill" />
 
             <Button
+                x:Name="Join"
+                Clicked="GoToJoin"
+                Text="Unirse a una sesión"
+                FontFamily="Jersey10"
+                FontSize="25"
+                HorizontalOptions="Fill" />
+
+            <Button
                 x:Name="Login"
                 Text="Iniciar Sesión" 
                 FontFamily="Jersey10"

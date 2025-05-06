@@ -4,12 +4,14 @@ using Supabase.Postgrest.Models;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PintaMesta.Models;
-using Plugin.Maui.Audio;
 
 namespace PintaMesta
 {
     public partial class MainPage : ContentPage
     {
+
+        private IOrientationService _orientationService;
+
         private static readonly List<string> WordList = new List<string>
         {
             "Silla", "Mesa", "Lámpara", "Reloj", "Cuchara", "Paraguas", "Mochila", "Televisor", "Celular", "Cepillo",
@@ -40,6 +42,9 @@ namespace PintaMesta
         {
             base.OnAppearing();
             IsLoggedIn();
+
+            _orientationService = App.Services.GetRequiredService<IOrientationService>();
+            _orientationService.ForcePortrait();
         }
 
         private async Task AnimateButton(Button button)
@@ -65,6 +70,14 @@ namespace PintaMesta
             await Shell.Current.GoToAsync(nameof(LoginPage));
         }
 
+        private async void GoToJoin(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            await AnimateButton(button);
+
+            await Shell.Current.GoToAsync(nameof(JoinSessionPage));
+        }
+
         private async void CreateASession(object sender, EventArgs e)
         {
             var button = (Button)sender;
@@ -72,12 +85,6 @@ namespace PintaMesta
 
             var client = SupabaseClientService.SupabaseClient;
             var user = client.Auth.CurrentUser;
-
-            if (user == null)
-            {
-                await DisplayAlert("Error", "Primero tienes que iniciar sesión", "Ok");
-                return;
-            }
 
             string sessionCode = GenerateCode(6);
 
@@ -147,6 +154,13 @@ namespace PintaMesta
             if (user != null)
             {
                 Login.IsVisible = false;
+                CreateSession.IsVisible = true;
+                Join.IsVisible = true;
+            }
+            else
+            {
+                CreateSession.IsVisible = false;
+                Join.IsVisible = false;
             }
         }
     }

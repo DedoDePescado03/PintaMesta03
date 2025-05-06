@@ -10,5 +10,6 @@ namespace PintaMesta.Services
     {
         void ForceLandscape();
         void AllowOrientations();
+        void ForcePortrait();
     }
 }

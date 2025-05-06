@@ -21,5 +21,13 @@ namespace PintaMesta.Platforms.iOS
                 new NSString("orientation")
             );
         }
+
+        public void ForcePortrait()
+        {
+            UIDevice.CurrentDevice.SetValueForKey(
+                NSNumber.FromInt32((int)UIInterfaceOrientation.Portrait),
+                new NSString("orientation")
+            );
+        }
     }
 }
