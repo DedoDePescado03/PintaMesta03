@@ -11,7 +11,7 @@ namespace PintaMesta.Models
     [Table("profiles")]
     public class Profile : BaseModel
     {
-        [PrimaryKey("id", false)]
+        [Column("id")]
         public string Id { get; set; }
 
         [Column("username")]

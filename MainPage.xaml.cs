@@ -4,6 +4,7 @@ using Supabase.Postgrest.Models;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PintaMesta.Models;
+using PintaMesta.Services;
 
 namespace PintaMesta
 {
@@ -117,7 +118,11 @@ namespace PintaMesta
 
                 Debug.WriteLine(player);
                 await client.From<SessionPlayer>().Insert(player);
-                await Shell.Current.GoToAsync($"LobbyPage?sessionId={createdSession.Id}&code={createdSession.Code}");
+
+                var responseUser = await client.From<Profile>().Where(s => s.Id == user.Id).Get();
+                var profile = responseUser.Models.FirstOrDefault();
+                var userName = profile.Username;
+                await Shell.Current.GoToAsync($"LobbyPage?sessionId={createdSession.Id}");
             }
             catch (Exception ex)
             {

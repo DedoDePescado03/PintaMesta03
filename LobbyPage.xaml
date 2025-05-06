@@ -4,6 +4,12 @@
              x:Class="PintaMesta.LobbyPage"
              Title="Lobby">
     <VerticalStackLayout>
+        <Label
+            x:Name="SessionName"
+            Text="Sesión de "
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+
         <Label 
             x:Name="SessionCodeLabel"
             Text="El código de la sesión es: "
