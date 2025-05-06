@@ -15,5 +15,14 @@
             Text="El código de la sesión es: "
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Label Text="Jugadores:" FontAttributes="Bold" Margin="10,20,0,5"/>
+        <CollectionView x:Name="PlayersListView" HeightRequest="300">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding}" FontSize="18" Margin="10,5"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
