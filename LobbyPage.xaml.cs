@@ -53,7 +53,7 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
 
     private void StartPlayerUpdates()
     {
-        _updateTimer = new Timer(2000);
+        _updateTimer = new Timer(500);
         _updateTimer.Elapsed += async (sender, e) => await LoadPlayers();
         _updateTimer.AutoReset = true;
         _updateTimer.Enabled = true;
