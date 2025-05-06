@@ -1,5 +1,6 @@
 namespace PintaMesta;
 using PintaMesta.Models;
+using System.Diagnostics;
 
 public partial class RegisterPage : ContentPage
 {
@@ -30,6 +31,15 @@ public partial class RegisterPage : ContentPage
 			{
 
 				await DisplayAlert("Éxito", "Usuario registrado correctamente", "Ok");
+                string createdUserId = session.User.Id;
+
+                var profile = new Profile
+				{
+					Id = createdUserId,
+					Username = user_name,
+				};
+				await supabase.From<Profile>().Insert(profile);
+
 				await Navigation.PushAsync(new LoginPage());
 			}
 			else
