@@ -136,7 +136,7 @@ namespace PintaMesta
                 var responseUser = await client.From<Profile>().Where(s => s.Id == user.Id).Get();
                 var profile = responseUser.Models.FirstOrDefault();
                 var userName = profile.Username;
-                await Shell.Current.GoToAsync($"LobbyPage?sessionId={createdSession.Id}");
+                await Shell.Current.GoToAsync($"//LobbyPage?sessionId={createdSession.Id}");
             }
             catch (Exception ex)
             {

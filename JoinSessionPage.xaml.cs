@@ -59,7 +59,7 @@ public partial class JoinSessionPage : ContentPage
             };
 
             await client.From<SessionPlayer>().Insert(player);
-            await Shell.Current.GoToAsync($"LobbyPage?sessionId={session.Id}");
+            await Shell.Current.GoToAsync($"//LobbyPage?sessionId={session.Id}");
         }
         catch (Exception ex)
         {

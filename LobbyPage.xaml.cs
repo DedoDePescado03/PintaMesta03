@@ -10,6 +10,9 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
     private string _sessionId;
     private Timer _updateTimer;
     private ObservableCollection<string> _usernames = new();
+    private bool _isHost = false;
+    private string _currentUserId;
+
     public LobbyPage()
     {
         InitializeComponent();
@@ -36,6 +39,12 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
                 {
                     SessionCodeLabel.Text = $"Código de sesión: {session.Code}";
                     SessionName.Text = $"Sesión de {hostUsername.Username}";
+
+                    var currentUserId = client.Auth.CurrentUser.Id;
+                    _currentUserId = currentUserId;
+                    _isHost = session.HostUserId == currentUserId;
+                    StartGame.IsVisible = _isHost;
+                    Shell.Current.Navigating += OnNavigating;
                     StartPlayerUpdates();
                 }
                 else
@@ -65,7 +74,22 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
 
         try
         {
+            var sessionCheck = await client.From<Session>().Where(s => s.Id == _sessionId).Get();
+            if(sessionCheck.Models.Count == 0)
+            {
+                if (!_isHost)
+                {
+                    await MainThread.InvokeOnMainThreadAsync(async () =>
+                    {
+                        Shell.Current.Navigating -= OnNavigating;
+                        await Shell.Current.GoToAsync("//MainPage");
+                        await DisplayAlert("Sesión terminada", "El host ha cerrado la sesión", "Ok");
+                    });
+                    return;
+                }
+            }
             var playerResponse = await client.From<SessionPlayer>().Where(sp => sp.SessionId == _sessionId).Get();
+
             var playerIds = playerResponse.Models.Select(p => p.UserId).ToList();
 
             var profileResponse = await client.From<Profile>().Filter("id", Supabase.Postgrest.Constants.Operator.In, playerIds).Get();
@@ -80,17 +104,169 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
                 }
             });
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.WriteLine($"Error al agregar jugadores: {ex}");
         }
     }
 
-    protected override void OnDisappearing()
+    protected override async void OnDisappearing()
     {
         base.OnDisappearing();
+
         _updateTimer?.Stop();
         _updateTimer?.Dispose();
+
+        Shell.Current.Navigating -= OnNavigating;
     }
 
+    private async void ConfirmPlayerExit()
+    {
+        bool shouldLeave = await DisplayAlert(
+            "Salir de la sesión",
+            "¿Seguro que quieres salir de la sesión?",
+            "Sí", "No");
+
+        if (shouldLeave)
+        {
+            var client = SupabaseClientService.SupabaseClient;
+
+            await client
+                .From<SessionPlayer>()
+                .Where(sp => sp.SessionId == _sessionId && sp.UserId == _currentUserId)
+                .Delete();
+
+            Debug.WriteLine("Jugador eliminado de la sesión");
+
+            Shell.Current.Navigating -= OnNavigating;
+            await Shell.Current.GoToAsync("//MainPage");
+        }
+    }
+
+    private async void ConfirmHostExit()
+    {
+        bool shouldLeave = await DisplayAlert(
+            "Cerrar sesión",
+            "¿Seguro que quieres cerrar la sesión?",
+            "Sí", "No");
+
+        if (shouldLeave)
+        {
+            var client = SupabaseClientService.SupabaseClient;
+
+            await client
+                .From<SessionPlayer>()
+                .Where(sp => sp.SessionId == _sessionId)
+                .Delete();
+
+            await client
+                .From<Session>()
+                .Where(s => s.Id == _sessionId)
+                .Delete();
+
+            Debug.WriteLine("Sesión y jugadores eliminados");
+
+            Shell.Current.Navigating -= OnNavigating;
+            await Shell.Current.GoToAsync("//MainPage");
+        }
+    }
+    private void OnBackToolbarItemClicked(object sender, EventArgs e)
+    {
+        if (_isHost)
+        {
+            ConfirmHostExit();
+        }
+        else
+        {
+            ConfirmPlayerExit();
+        }
+    }
+    protected override bool OnBackButtonPressed()
+    {
+        if (_isHost)
+        {
+            ConfirmHostExit();
+        }
+        else
+        {
+            ConfirmPlayerExit();
+        }
+
+        return true; // Previene el comportamiento por defecto
+    }
+
+    private void OnNavigating(object sender, ShellNavigatingEventArgs e)
+    {
+        if (e.Source == ShellNavigationSource.Pop)
+        {
+            e.Cancel(); // Cancelamos navegación por ahora
+
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                if (_isHost)
+                {
+                    bool shouldLeave = await Application.Current.MainPage.DisplayAlert(
+                        "Cerrar sesión",
+                        "¿Seguro que quieres cerrar la sesión?",
+                        "Sí", "No");
+
+                    if (shouldLeave)
+                    {
+                        try
+                        {
+                            var client = SupabaseClientService.SupabaseClient;
+
+                            await client
+                                .From<SessionPlayer>()
+                                .Where(sp => sp.SessionId == _sessionId)
+                                .Delete();
+
+                            await client
+                                .From<Session>()
+                                .Where(s => s.Id == _sessionId)
+                                .Delete();
+
+                            Debug.WriteLine("Sesión y jugadores eliminados");
+
+                            Shell.Current.Navigating -= OnNavigating;
+                            await Shell.Current.GoToAsync("//MainPage");
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"Error al eliminar sesión: {ex.Message}");
+                        }
+                    }
+                }
+                else
+                {
+                    bool shouldLeave = await Application.Current.MainPage.DisplayAlert(
+                        "Salir de la sesión",
+                        "¿Seguro que quieres salir de la sesión?",
+                        "Sí", "No");
+
+                    if (shouldLeave)
+                    {
+                        try
+                        {
+                            var client = SupabaseClientService.SupabaseClient;
+
+                            await client
+                                .From<SessionPlayer>()
+                                .Where(sp => sp.SessionId == _sessionId && sp.UserId == _currentUserId)
+                                .Delete();
+
+                            Debug.WriteLine("Jugador eliminado de la sesión");
+
+                            Shell.Current.Navigating -= OnNavigating;
+                            await Shell.Current.GoToAsync("//MainPage");
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"Error al eliminar jugador: {ex.Message}");
+                        }
+                    }
+                }
+            });
+        }
+    }
 }

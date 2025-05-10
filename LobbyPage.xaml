@@ -3,7 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PintaMesta.LobbyPage"
              Title="Lobby">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Salir" 
+            Clicked="OnBackToolbarItemClicked" 
+            Priority="0" 
+            Order="Primary"/>
+    </ContentPage.ToolbarItems>
+
     <VerticalStackLayout>
+
         <Label
             x:Name="SessionName"
             Text="Sesión de "
@@ -24,5 +34,11 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <Button
+            x:Name="StartGame"
+            Text="Empezar"
+            IsVisible="False"
+            HorizontalOptions="Center" />
     </VerticalStackLayout>
 </ContentPage>
