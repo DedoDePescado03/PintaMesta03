@@ -1,102 +1,153 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PintaMesta.MainPage">
+             x:Class="PintaMesta.MainPage"
+             BackgroundColor="Transparent">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="VerticalStackLayout" x:Key="Background">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark=White, Light=White}"></Setter>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
+    <Grid>
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="60,0"
-            Style="{StaticResource Background}"
-            Spacing="40">
-            
-            <HorizontalStackLayout Margin="30">
-                <Label Text="P" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
+        <Image Source="fondo.png"
+               Aspect="AspectFill"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand" />
+
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="70,0"
+                Spacing="40"
+                Style="{StaticResource Background}">
+
+                <HorizontalStackLayout Margin="30">
+                    <Label Text="P" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
+                    <Image
+                        x:Name="logoImage"
+                        Source="newlogo.png"
+                        WidthRequest="70"
+                        HeightRequest="70"
+                        Rotation="75"
+                        TranslationY="-130"
+                        VerticalOptions="Center"/>
+                    <Label Text="nta.me&#10;sta" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
+                </HorizontalStackLayout>
+
+                <Grid>
+                    <Image
+                        x:Name="dinoImage"
+                        Source="dinosaurio.png"
+                        HeightRequest="100"
+                        Aspect="AspectFit"
+                        HorizontalOptions="Start"
+                        Rotation="340"
+                        Margin="-40,0,0,0"
+                        TranslationX="-230" />
+                    <Image
+                        x:Name="nubeImage"
+                        Source="nube.png"
+                        HeightRequest="150"
+                        Aspect="AspectFit"
+                        HorizontalOptions="End"
+                        Margin="0,0,-40,0"
+                        TranslationX="230" />
+                </Grid>
+
+                <Button
+                    x:Name="PlayGuest"
+                    Clicked="GoToDrawPage"
+                    Text="Dibujar"
+                    FontFamily="Jersey10"
+                    FontSize="25"
+                    CornerRadius="25"
+                    BorderWidth="-100"
+                    HorizontalOptions="Fill">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#F23CF2" Offset="0.2" />
+                            <GradientStop Color="#D33FFE" Offset="0.4" />
+                            <GradientStop Color="#AD46FF" Offset="0.6" />
+                            <GradientStop Color="#7B4FFF" Offset="0.8" />
+                            <GradientStop Color="#0058FF" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#80000000"
+                            Offset="4,4"
+                            Radius="5"
+                            Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
+
+                <Button
+                    x:Name="CreateSession"
+                    Clicked="CreateASession"
+                    Text="Crear Sesión"
+                    FontFamily="Jersey10"
+                    FontSize="25"
+                    HorizontalOptions="Fill" />
+
+                <Button
+                    x:Name="Join"
+                    Clicked="GoToJoin"
+                    Text="Unirse a una sesión"
+                    FontFamily="Jersey10"
+                    FontSize="25"
+                    CornerRadius="25"
+                    BorderWidth="-100"
+                    HorizontalOptions="Fill">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FFA07A" Offset="0.0" />
+                            <GradientStop Color="#FF7F50" Offset="0.25" />
+                            <GradientStop Color="#FF6347" Offset="0.5" />
+                            <GradientStop Color="#FF4500" Offset="0.75" />
+                            <GradientStop Color="#FFA500" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#80000000"
+                            Offset="4,4"
+                            Radius="5"
+                            Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
+
+                <Button
+                    x:Name="Login"
+                    Text="Iniciar Sesión"
+                    FontFamily="Jersey10"
+                    FontSize="25"
+                    Clicked="GoToLogin"
+                    CornerRadius="25"
+                    BorderWidth="-100"
+                    HorizontalOptions="Fill">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#8FBC8B" Offset="0.0" />
+                            <GradientStop Color="#66CDAA" Offset="0.25" />
+                            <GradientStop Color="#20B2AA" Offset="0.5" />
+                            <GradientStop Color="#008B8B" Offset="0.75" />
+                            <GradientStop Color="#008080" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#80000000"
+                            Offset="4,4"
+                            Radius="5"
+                            Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
+
                 <Image
-                    x:Name="logoImage"
-                    Source="newlogo.png"
-                    WidthRequest="70"
-                    HeightRequest="70"
-                    Rotation="75"
-                    TranslationY="-130"
-                    VerticalOptions="Center"/>
-                <Label Text="nta.me&#10;sta" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
-            </HorizontalStackLayout>
+                    x:Name="pizzaImage"
+                    Source="pizza.png"
+                    HeightRequest="120"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"
+                    Margin="30,0,0,0"
+                    TranslationY="270" />
+            </VerticalStackLayout>
+        </ScrollView>
 
-            <Image
-                x:Name="dinoImage"
-                Source="dinosaurio.png"
-                HeightRequest="110"
-                Aspect="AspectFit"
-                HorizontalOptions="Start"
-                Rotation="340" 
-                TranslationX="-230"
-                />
-
-            <Button
-                x:Name="PlayGuest"
-                Clicked="GoToDrawPage"
-                Text="Dibujar"
-                FontFamily="Jersey10"
-                FontSize="25"
-                CornerRadius="25"
-                BorderWidth="-100"
-                HorizontalOptions="Fill">
-                            <Button.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                    <GradientStop Color="#F23CF2" Offset="0.2" />
-                                    <GradientStop Color="#D33FFE" Offset="0.4" />
-                                    <GradientStop Color="#AD46FF" Offset="0.6" />
-                                    <GradientStop Color="#7B4FFF" Offset="0.8" />
-                                    <GradientStop Color="#0058FF" Offset="1.0" />
-                                </LinearGradientBrush>
-                            </Button.Background>
-
-                <Button.Shadow>
-                    <Shadow
-                        Brush="#80000000"
-                        Offset="4,4"
-                        Radius="5"
-                        Opacity="0.6"
-                        />
-                </Button.Shadow>
-
-            </Button>
-
-
-            <Button
-                 x:Name="CreateSession"
-                 Clicked="CreateASession"
-                 Text="Crear Sesión" 
-                 FontFamily="Jersey10"
-                 FontSize="25"
-                 HorizontalOptions="Fill" 
-                 BackgroundColor="#AAFFFFFF"
-                />
-
-            <Button
-                x:Name="Join"
-                Clicked="GoToJoin"
-                Text="Unirse a una sesión"
-                FontFamily="Jersey10"
-                FontSize="25"
-                HorizontalOptions="Fill" />
-
-            <Button
-                x:Name="Login"
-                Text="Iniciar Sesión" 
-                FontFamily="Jersey10"
-                FontSize="25"
-                Clicked="GoToLogin"
-                HorizontalOptions="Fill" />
-        </VerticalStackLayout>
-    </ScrollView>
-
+    </Grid>
 </ContentPage>

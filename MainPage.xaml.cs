@@ -1,4 +1,8 @@
-﻿using Supabase.Interfaces;
+﻿#if ANDROID
+using PintaMesta.Platforms.Android;
+#endif
+
+using Supabase.Interfaces;
 using Supabase;
 using Supabase.Postgrest.Models;
 using System.Diagnostics;
@@ -10,7 +14,6 @@ namespace PintaMesta
 {
     public partial class MainPage : ContentPage
     {
-
         private IOrientationService _orientationService;
 
         private static readonly List<string> WordList = new List<string>
@@ -42,24 +45,43 @@ namespace PintaMesta
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+#if ANDROID
+            PlatformUtils.OcultarBarraDeEstado();
+#endif
+
             IsLoggedIn();
 
             _orientationService = App.Services.GetRequiredService<IOrientationService>();
             _orientationService.ForcePortrait();
 
-            string[] frames = { "dinosaurio.png", "dinosaurio2.png" };
-            int currentFrame = 0;
+            string[] dinoFrames = { "dinosaurio.png", "dinosaurio2.png" };
+            string[] nubeFrames = { "nube.png", "nube2.png" };
+            string[] pizzaFrames = { "pizza.png", "pizza2.png" };
+            int dinoFrame = 0;
+            int nubeFrame = 0;
+            int pizzaFrame = 0;
 
-            await dinoImage.TranslateTo(0, 0, 1500, Easing.BounceOut);
+            await Task.WhenAll(
+                dinoImage.TranslateTo(0, 0, 1500, Easing.BounceOut),
+                nubeImage.TranslateTo(0, 0, 1500, Easing.BounceOut),
+                pizzaImage.TranslateTo(0, 0, 1500, Easing.BounceOut)
+            );
+
             await logoImage.TranslateTo(0, 0, 1500, Easing.BounceOut);
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.5), () =>
+            Device.StartTimer(TimeSpan.FromSeconds(0.4), () =>
             {
-                currentFrame = (currentFrame + 1) % frames.Length;
-                dinoImage.Source = frames[currentFrame];
+                dinoFrame = (dinoFrame + 1) % dinoFrames.Length;
+                nubeFrame = (nubeFrame + 1) % nubeFrames.Length;
+                pizzaFrame = (pizzaFrame + 1) % pizzaFrames.Length;
+
+                dinoImage.Source = dinoFrames[dinoFrame];
+                nubeImage.Source = nubeFrames[nubeFrame];
+                pizzaImage.Source = pizzaFrames[pizzaFrame];
+
                 return true;
             });
-
         }
 
         private async Task AnimateButton(Button button)
