@@ -37,6 +37,7 @@
 
         <Button
             x:Name="StartGame"
+            Clicked="StartGameClicked"
             Text="Empezar"
             IsVisible="False"
             HorizontalOptions="Center" />

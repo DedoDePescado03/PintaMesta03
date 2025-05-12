@@ -12,7 +12,6 @@
         Route="MainPage" />
 
     <ShellContent 
-        Title="Dibuja" 
         ContentTemplate="{DataTemplate local:DrawingPage}" 
         Route="DrawingPage"/>
 
@@ -20,5 +19,9 @@
         Title="Lobby" 
         ContentTemplate="{DataTemplate local:LobbyPage}" 
         Route="LobbyPage"/>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate local:GuessingPage}" 
+        Route="GuessingPage"/>
 
 </Shell>

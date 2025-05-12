@@ -23,6 +23,9 @@ namespace PintaMesta.Models
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 
+        [Column("has_game_started")]
+        public bool HasGameStarted { get; set; }
+
         [Column("current_word")]
         public string CurrentWord { get; set; }
     }

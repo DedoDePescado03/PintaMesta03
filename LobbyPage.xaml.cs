@@ -12,6 +12,28 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
     private ObservableCollection<string> _usernames = new();
     private bool _isHost = false;
     private string _currentUserId;
+    private bool _startClicked = false;
+
+    private static readonly List<string> WordList = new List<string>
+        {
+            "Silla", "Mesa", "Lámpara", "Reloj", "Cuchara", "Paraguas", "Mochila", "Televisor", "Celular", "Cepillo",
+            "Lentes", "Balón", "Maleta", "Piano", "Espejo", "Taza", "Ventana", "Puerta", "Camiseta", "Zapato",
+
+            "Perro", "Gato", "Elefante", "León", "Pez", "Tiburón", "Águila", "Conejo", "Serpiente", "Tortuga",
+            "Delfín", "Rana", "Pato", "Cangrejo", "Ratón", "Oveja", "Vaca", "Caballo", "Jirafa", "Cebra",
+
+            "Árbol", "Flor", "Sol", "Luna", "Nube", "Estrella", "Montaña", "Río", "Lago", "Roca",
+            "Nieve", "Lluvia", "Arena", "Volcán", "Isla",
+
+            "Refrigerador", "Microondas", "Sofá", "Cama", "Almohada", "Lavadora", "Cortina", "Alfombra", "Estufa", "Telefono fijo",
+
+            "Auto", "Bicicleta", "Moto", "Camión", "Barco", "Avión", "Helicóptero", "Tren", "Cohete", "Tractor",
+
+            "Manzana", "Plátano", "Pizza", "Helado", "Pan", "Huevo", "Sandía", "Hamburguesa", "Zanahoria", "Uvas",
+
+            "Fantasma", "Payaso", "Globo", "Regalo", "Robot", "Sombrero", "Juguete", "Muñeca", "Espada", "Corona",
+            "Dragón", "Sirena", "Ovni", "Calavera", "Castillo"
+        };
 
     public LobbyPage()
     {
@@ -71,7 +93,6 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
     private async Task LoadPlayers()
     {
         var client = SupabaseClientService.SupabaseClient;
-
         try
         {
             var sessionCheck = await client.From<Session>().Where(s => s.Id == _sessionId).Get();
@@ -86,6 +107,18 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
                         await DisplayAlert("Sesión terminada", "El host ha cerrado la sesión", "Ok");
                     });
                     return;
+                }
+            }
+            else
+            {
+                var session = sessionCheck.Models.FirstOrDefault();
+                var word = session.CurrentWord;
+                if(session.HasGameStarted == true)
+                {
+                    if (_isHost)
+                        await Shell.Current.GoToAsync($"//DrawingPage?word={word}&sessionId={_sessionId}");
+                    else
+                        await Shell.Current.GoToAsync($"//GuessingPage?word={word}&sessionId={_sessionId}");
                 }
             }
             var playerResponse = await client.From<SessionPlayer>().Where(sp => sp.SessionId == _sessionId).Get();
@@ -268,5 +301,16 @@ public partial class LobbyPage : ContentPage, IQueryAttributable
                 }
             });
         }
+    }
+
+    private async void StartGameClicked(object sender, EventArgs e)
+    {
+        var client = SupabaseClientService.SupabaseClient;
+
+        await client
+            .From<Session>()
+            .Where(s => s.Id == _sessionId)
+            .Set(s => s.HasGameStarted, true)
+            .Update();
     }
 }

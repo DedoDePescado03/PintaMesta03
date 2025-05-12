@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             x:Class="PintaMesta.GuessingPage">
+    <VerticalStackLayout>
+
+        <HorizontalStackLayout>
+            <mct:DrawingView
+                x:Name="Drawing"
+                InputTransparent="True"
+                BackgroundColor="LightGrey"
+                IsMultiLineModeEnabled="True"
+                WidthRequest="600"
+                HeightRequest="260"
+                HorizontalOptions="Center" />
+        </HorizontalStackLayout>
+        
+    </VerticalStackLayout>
+</ContentPage>

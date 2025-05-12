@@ -4,10 +4,16 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using System;
 using System.Collections.Generic;
+using PintaMesta.Models;
+using System.Linq;
+using System.Text.Json;
 
 public partial class DrawingPage : ContentPage, IQueryAttributable
 {
     private IOrientationService _orientationService;
+    private System.Timers.Timer _timer;
+    private string _sessionId;
+    private string _drawingRecordId;
 
     public DrawingPage()
     {
@@ -23,6 +29,10 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
         else
         {
             CurrentWordLabel.Text = "No se recibió una palabra.";
+        }
+        if (query.ContainsKey("sessionId"))
+        {
+            _sessionId = query["sessionId"] as string;
         }
     }
 
@@ -40,9 +50,25 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
         _orientationService?.AllowOrientations();
     }
 
-    private void ClearDrawingView(System.Object sender, System.EventArgs e)
+    private async void ClearDrawingView(object sender, EventArgs e)
     {
         DrawBoard.Lines.Clear();
+
+        var drawingUpdate = new DrawingData
+        {
+            Id = _drawingRecordId,
+            SessionId = _sessionId,
+            Points = "[]",
+            IsCleared = true,
+            LineColor = DrawBoard.LineColor.ToHex(),
+            LineWidth = DrawBoard.LineWidth,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await SupabaseClientService.SupabaseClient
+            .From<DrawingData>()
+            .Where(d => d.Id == _drawingRecordId)
+            .Update(drawingUpdate);
     }
 
     private void ChangeColor(object sender, EventArgs e)
@@ -75,6 +101,55 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
 
             if (LineWidthLabel != null)
                 LineWidthLabel.Text = $"Grosor de linea: {e.NewValue:F1}";
+        }
+    }
+
+    private async void OnDrawn(object sender, EventArgs e)
+    {
+        await SaveDrawing();
+    }
+
+    private async Task SaveDrawing()
+    {
+        var allLines = DrawBoard.Lines.Select(line => new SerializedLine
+        {
+            Points = line.Points.Select(p => new PointData { X = p.X, Y = p.Y }).ToList(),
+            Color = line.LineColor.ToHex(),
+            Width = line.LineWidth
+        }).ToList();
+
+        var serialized = JsonSerializer.Serialize(allLines);
+
+        if (string.IsNullOrEmpty(_drawingRecordId))
+        {
+            _drawingRecordId = Guid.NewGuid().ToString();
+            var drawing = new DrawingData
+            {
+                Id = _drawingRecordId,
+                SessionId = _sessionId,
+                Points = serialized,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await SupabaseClientService.SupabaseClient
+                .From<DrawingData>()
+                .Insert(drawing);
+        }
+        else
+        {
+            var drawingUpdate = new DrawingData
+            {
+                Id = _drawingRecordId,
+                SessionId = _sessionId,
+                Points = serialized,
+                IsCleared = false,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await SupabaseClientService.SupabaseClient
+                .From<DrawingData>()
+                .Where(d => d.Id == _drawingRecordId)
+                .Update(drawingUpdate);
         }
     }
 }
