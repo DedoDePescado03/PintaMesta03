@@ -82,7 +82,26 @@
                     Text="Crear Sesión"
                     FontFamily="Jersey10"
                     FontSize="25"
-                    HorizontalOptions="Fill" />
+                    CornerRadius="25"
+                    BorderWidth="-100"
+                    HorizontalOptions="Fill">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FFD700" Offset="0.0" />
+                            <GradientStop Color="#FFFF00" Offset="0.25" />
+                            <GradientStop Color="#FFFFE0" Offset="0.50" />
+                            <GradientStop Color="#FFFACD" Offset="0.75" />
+                            <GradientStop Color="#FAFAD2" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#80000000"
+                            Offset="4,4"
+                            Radius="5"
+                            Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
 
                 <Button
                     x:Name="Join"
