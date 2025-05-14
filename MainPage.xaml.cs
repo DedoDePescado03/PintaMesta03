@@ -1,8 +1,4 @@
-﻿#if ANDROID
-using PintaMesta.Platforms.Android;
-#endif
-
-using Supabase.Interfaces;
+﻿using Supabase.Interfaces;
 using Supabase;
 using Supabase.Postgrest.Models;
 using System.Diagnostics;
@@ -46,9 +42,6 @@ namespace PintaMesta
         {
             base.OnAppearing();
 
-#if ANDROID
-            PlatformUtils.OcultarBarraDeEstado();
-#endif
 
             IsLoggedIn();
 
