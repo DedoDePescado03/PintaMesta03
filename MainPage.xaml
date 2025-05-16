@@ -13,8 +13,7 @@
         <ScrollView>
             <VerticalStackLayout
                 Padding="70,0"
-                Spacing="40"
-                Style="{StaticResource Background}">
+                Spacing="40">
 
                 <HorizontalStackLayout Margin="30">
                     <Label Text="P" FontSize="50" TextColor="Black" FontFamily="Jersey10"/>
