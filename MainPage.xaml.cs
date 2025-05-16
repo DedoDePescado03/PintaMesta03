@@ -46,9 +46,9 @@ namespace PintaMesta
         {
             base.OnAppearing();
 
-#if ANDROID
-            PlatformUtils.OcultarBarraDeEstado();
-#endif
+            #if ANDROID
+                        PlatformUtils.OcultarBarraDeEstado();
+            #endif
 
             IsLoggedIn();
 
