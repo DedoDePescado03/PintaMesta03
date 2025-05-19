@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using PintaMesta.Models;
 using System.Linq;
 using System.Text.Json;
+using System.Diagnostics;
 
 public partial class DrawingPage : ContentPage, IQueryAttributable
 {
@@ -14,6 +15,27 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
     private System.Timers.Timer _timer;
     private string _sessionId;
     private string _drawingRecordId;
+
+    private static readonly List<string> WordList = new List<string>
+        {
+            "Silla", "Mesa", "Lámpara", "Reloj", "Cuchara", "Paraguas", "Mochila", "Televisor", "Celular", "Cepillo",
+            "Lentes", "Balón", "Maleta", "Piano", "Espejo", "Taza", "Ventana", "Puerta", "Camiseta", "Zapato",
+
+            "Perro", "Gato", "Elefante", "León", "Pez", "Tiburón", "Águila", "Conejo", "Serpiente", "Tortuga",
+            "Delfín", "Rana", "Pato", "Cangrejo", "Ratón", "Oveja", "Vaca", "Caballo", "Jirafa", "Cebra",
+
+            "Árbol", "Flor", "Sol", "Luna", "Nube", "Estrella", "Montaña", "Río", "Lago", "Roca",
+            "Nieve", "Lluvia", "Arena", "Volcán", "Isla",
+
+            "Refrigerador", "Microondas", "Sofá", "Cama", "Almohada", "Lavadora", "Cortina", "Alfombra", "Estufa", "Telefono fijo",
+
+            "Auto", "Bicicleta", "Moto", "Camión", "Barco", "Avión", "Helicóptero", "Tren", "Cohete", "Tractor",
+
+            "Manzana", "Plátano", "Pizza", "Helado", "Pan", "Huevo", "Sandía", "Hamburguesa", "Zanahoria", "Uvas",
+
+            "Fantasma", "Payaso", "Globo", "Regalo", "Robot", "Sombrero", "Juguete", "Muñeca", "Espada", "Corona",
+            "Dragón", "Sirena", "Ovni", "Calavera", "Castillo"
+        };
 
     public DrawingPage()
     {
@@ -34,6 +56,10 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
         {
             _sessionId = query["sessionId"] as string;
         }
+        if (query.ContainsKey("drawingId"))
+        {
+            _drawingRecordId = query["drawingId"] as string;
+        }
     }
 
     protected override void OnAppearing()
@@ -42,8 +68,174 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
 
         _orientationService = App.Services.GetRequiredService<IOrientationService>();
         _orientationService.ForceLandscape();
+        StartRoundTimer();
     }
 
+    private async void StartRoundTimer()
+    {
+        await Task.Delay(TimeSpan.FromMinutes(1));
+        await EndRound();
+    }
+
+    private async Task EndRound()
+    {
+        await MainThread.InvokeOnMainThreadAsync(() =>
+        {
+            DrawBoard.Lines.Clear();
+        });
+        await StartNextRound();
+    }
+
+        private async Task StartNextRound()
+        {
+            var client = SupabaseClientService.SupabaseClient;
+
+            var playersResponse = await client
+                .From<SessionPlayer>()
+                .Where(sp => sp.SessionId == _sessionId)
+                .Order("joined_at", Supabase.Postgrest.Constants.Ordering.Ascending)
+                .Get();
+
+            var players = playersResponse.Models;
+            if (players.Count == 0) return;
+
+            var sessionResponse = await client
+                .From<Session>()
+                .Where(s => s.Id == _sessionId)
+                .Get();
+
+            var session = sessionResponse.Models.FirstOrDefault();
+            if (session == null) return;
+
+            int currentDrawerIndex = players.FindIndex(p => p.UserId == session.DrawerUserId);
+            int nextDrawerIndex = (currentDrawerIndex + 1) % players.Count;
+            var nextDrawer = players[nextDrawerIndex];
+            var increasedRound = session.RoundNumber + 1;
+
+            if (increasedRound > players.Count)
+            {
+                Console.WriteLine("Se terminó la partida");
+                //Terminar partida, ya todos dibujaron
+                await client
+                      .From<Session>()
+                      .Where(s => s.Id == _sessionId)
+                      .Set(s => s.HasGameEnded, true)
+                      .Update();
+
+            // 1. Obtener los userIds de los jugadores
+            var userIds = players.Select(p => p.UserId).ToList();
+
+            // 2. Obtener todos los perfiles (puedes filtrar en memoria)
+            var profilesResponse = await client
+                .From<Profile>()
+                .Get();
+
+            var allProfiles = profilesResponse.Models;
+
+            // 3. Filtrar solo los perfiles necesarios
+            var filteredProfiles = allProfiles
+                .Where(p => userIds.Contains(p.Id))
+                .ToList();
+
+            // 4. Unir score con username
+            var playersWithScores = players
+                .Select(p =>
+                {
+                    var profile = filteredProfiles.FirstOrDefault(pr => pr.Id == p.UserId);
+                    return new PlayerResult
+                    {
+                        Username = profile?.Username ?? "Desconocido",
+                        Score = p.Score
+                    };
+                })
+                .ToList();
+
+            // 5. Guardar la lista en un servicio compartido
+            GameDataService.PlayersWithScores = playersWithScores;
+
+            // 6. Terminar partida
+            await client
+                  .From<Session>()
+                  .Where(s => s.Id == _sessionId)
+                  .Set(s => s.HasGameEnded, true)
+                  .Update();
+
+            await Shell.Current.GoToAsync("//MainPage");
+            return;
+            }
+
+            foreach (var player in players)
+            {
+                player.IsDrawer = (player.UserId == nextDrawer.UserId);
+                await client
+                    .From<SessionPlayer>()
+                    .Where(sp => sp.Id == player.Id)
+                    .Set(sp => sp.IsDrawer, player.IsDrawer)
+                    .Update();
+            }
+
+            string newWord = GetRandomWord();
+            string newDrawingId = Guid.NewGuid().ToString();
+            _drawingRecordId = newDrawingId;
+
+            // Guarda nuevo dibujo vacío en Supabase
+            await client
+                .From<DrawingData>()
+                .Insert(new DrawingData
+                {
+                    Id = newDrawingId,
+                    SessionId = _sessionId,
+                    Points = "[]",
+                    CreatedAt = DateTime.UtcNow,
+                    IsCleared = false
+                });
+
+            await client
+                .From<Session>()
+                .Where(s => s.Id == _sessionId)
+                .Set(s => s.DrawerUserId, nextDrawer.UserId)
+                .Set(s => s.CurrentWord, newWord)
+                .Set(s => s.RoundNumber, increasedRound)
+                .Set(s => s.CurrentDrawingId, newDrawingId)
+                .Update();
+
+            ClearDrawing();
+
+
+            Debug.WriteLine($"Nueva ronda: {newWord}, dibuja {nextDrawer.UserId}");
+                await Shell.Current.GoToAsync("//GuessingPage", true, new Dictionary<string, object>
+                {
+                    { "sessionId", _sessionId },
+                });
+        }
+
+    private async void ClearDrawing()
+    {
+        DrawBoard.Lines.Clear();
+
+        var drawingUpdate = new DrawingData
+        {
+            Id = _drawingRecordId,
+            SessionId = _sessionId,
+            Points = "[]",
+            IsCleared = true,
+            LineColor = DrawBoard.LineColor.ToHex(),
+            LineWidth = DrawBoard.LineWidth,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await SupabaseClientService.SupabaseClient
+            .From<DrawingData>()
+                .Where(d => d.Id == _drawingRecordId)
+                .Update(drawingUpdate);
+    }
+
+    private string GetRandomWord()
+    {
+        var random = new Random();
+        int index = random.Next(WordList.Count);
+        return WordList[index];
+    }
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
@@ -134,6 +326,12 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
             await SupabaseClientService.SupabaseClient
                 .From<DrawingData>()
                 .Insert(drawing);
+
+            await SupabaseClientService.SupabaseClient
+                .From<Session>()
+                .Where(s => s.Id == _sessionId)
+                .Set(s => s.CurrentDrawingId, _drawingRecordId)
+                .Update();
         }
         else
         {
@@ -152,4 +350,5 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
                 .Update(drawingUpdate);
         }
     }
+
 }

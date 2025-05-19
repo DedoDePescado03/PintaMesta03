@@ -133,6 +133,7 @@ namespace PintaMesta
                 DrawerUserId = user.Id,
                 CreatedAt = DateTime.Now,
                 CurrentWord = GetRandomWord(),
+                RoundNumber = 1
             };
 
             try

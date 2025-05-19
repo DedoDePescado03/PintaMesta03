@@ -8,7 +8,7 @@ namespace PintaMesta.Models
     [Table("sessions")]
     public class Session : BaseModel
     {
-        [Column("id"), JsonIgnore]
+        [PrimaryKey("id", false), JsonIgnore]
         public string Id { get; set; }
 
         [Column("code")]
@@ -28,5 +28,14 @@ namespace PintaMesta.Models
 
         [Column("current_word")]
         public string CurrentWord { get; set; }
+
+        [Column("round_number")]
+        public int RoundNumber { get; set; }
+
+        [Column("current_drawing_id")]
+        public string CurrentDrawingId { get; set; }
+
+        [Column("has_game_ended")]
+        public bool HasGameEnded {  get; set; }
     }
 }

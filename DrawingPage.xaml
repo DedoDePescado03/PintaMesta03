@@ -5,16 +5,21 @@
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
              x:Class="PintaMesta.DrawingPage">
 
-    <VerticalStackLayout>
+    <Grid RowDefinitions="Auto, *">
 
+        <!-- Palabra actual -->
         <Label 
             x:Name="CurrentWordLabel"
             FontSize="Medium"
             Margin="0,0,0,10"
-            HorizontalOptions="Center" 
-            FontFamily="Jersey10"/>
+            HorizontalOptions="Center"
+            FontFamily="Jersey10"
+            Grid.Row="0" />
 
-        <HorizontalStackLayout Padding="10">
+        <!-- Contenido principal: Dibujo y herramientas -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto">
+
+            <!-- Lienzo -->
             <mct:DrawingView
                 x:Name="DrawBoard"
                 BackgroundColor="LightGrey"
@@ -22,20 +27,28 @@
                 IsMultiLineModeEnabled="True"
                 WidthRequest="600"
                 HeightRequest="260"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Grid.Column="0" />
 
-            <VerticalStackLayout>
+            <!-- Herramientas del drawer -->
+            <VerticalStackLayout x:Name="DrawerTools"
+                                  Grid.Column="1"
+                                  IsVisible="True">
+                <!-- Cambia esto en C# -->
+
                 <Button Margin="10"
-                    x:Name="ClrBtn"
-                    WidthRequest="100"
-                    HeightRequest="35"
-                    BackgroundColor="Red"
-                    Text="Clear"
-                    FontFamily="Jersey10"
-                    Clicked="ClearDrawingView"
-                    VerticalOptions="Start"
-                    HorizontalOptions="End"/>
+                        x:Name="ClrBtn"
+                        WidthRequest="100"
+                        HeightRequest="35"
+                        BackgroundColor="Red"
+                        Text="Clear"
+                        FontFamily="Jersey10"
+                        Clicked="ClearDrawingView"
+                        VerticalOptions="Start"
+                        HorizontalOptions="End"/>
 
+                <!-- Paleta de colores -->
                 <Grid Padding="10" ColumnSpacing="10" RowSpacing="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -48,6 +61,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- Botones de color -->
                     <Button Grid.Row="0" Grid.Column="0" BackgroundColor="Red" Clicked="ChangeColor" CommandParameter="Red" WidthRequest="30" HeightRequest="30" />
                     <Button Grid.Row="0" Grid.Column="1" BackgroundColor="Green" Clicked="ChangeColor" CommandParameter="Green" WidthRequest="30" HeightRequest="30" />
                     <Button Grid.Row="0" Grid.Column="2" BackgroundColor="Blue" Clicked="ChangeColor" CommandParameter="Blue" WidthRequest="30" HeightRequest="30" />
@@ -60,19 +74,20 @@
                 </Grid>
 
                 <Slider x:Name="LineWidthSlider"
-                    Minimum="1"
-                    Maximum="30"
-                    Value="5"
-                    ValueChanged="LineWidthSlider_ValueChanged"
-                    HorizontalOptions="FillAndExpand"
-                    Margin="10" />
+                        Minimum="1"
+                        Maximum="30"
+                        Value="5"
+                        ValueChanged="LineWidthSlider_ValueChanged"
+                        HorizontalOptions="FillAndExpand"
+                        Margin="10" />
 
                 <Label x:Name="LineWidthLabel"
-                   Text="Grosor de linea: 5"
-                   HorizontalOptions="Center"
-                   Margin="0,0,0,5" 
-                   FontFamily="Jersey10"/>
+                       Text="Grosor de linea: 5"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,5" 
+                       FontFamily="Jersey10"/>
             </VerticalStackLayout>
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+
+        </Grid>
+    </Grid>
 </ContentPage>

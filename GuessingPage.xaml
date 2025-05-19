@@ -4,18 +4,51 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
              x:Class="PintaMesta.GuessingPage">
-    <VerticalStackLayout>
+    <Grid RowDefinitions="Auto, Auto">
 
-        <HorizontalStackLayout>
-            <mct:DrawingView
-                x:Name="Drawing"
-                InputTransparent="True"
-                BackgroundColor="LightGrey"
-                IsMultiLineModeEnabled="True"
-                WidthRequest="600"
-                HeightRequest="260"
-                HorizontalOptions="Center" />
+        <!-- Primera fila: dibujo y adivinanzas -->
+        <Grid x:Name="myGrid" Grid.Row="0" ColumnDefinitions="*, Auto" HeightRequest="260">
+            <Frame Padding="0" HasShadow="False" Grid.Column="0">
+                <ContentView x:Name="DrawingContainer" />
+            </Frame>
+
+            <Frame Padding="0" HasShadow="False" Grid.Column="1">
+                <CollectionView
+                    x:Name="GuessesList"
+                    ItemsSource="{Binding Guesses}"
+                    Margin="10"
+                    HeightRequest="260"
+                    WidthRequest="120">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="5" Margin="0,2" HasShadow="False" BorderColor="Red" BackgroundColor="Red">
+                                <Label Text="{Binding}" FontSize="12" />
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+        </Grid>
+
+        <!-- Segunda fila: entrada de texto y botón -->
+        <HorizontalStackLayout Grid.Row="1" Margin="20,10,20,0">
+            <Entry
+                x:Name="Guess"
+                WidthRequest="480"
+                HorizontalOptions="StartAndExpand"
+                VerticalOptions="End" />
+
+            <Button
+                x:Name="sendGuess"
+                Clicked="SendGuess"
+                Text="Adivinar"
+                WidthRequest="100"
+                HeightRequest="50"
+                HorizontalOptions="End"/>
         </HorizontalStackLayout>
-        
-    </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>
