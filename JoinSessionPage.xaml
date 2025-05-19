@@ -9,18 +9,21 @@
         <Label 
             Text="Ingresa el código de la sesión"
             FontFamily="Jersey10"
+            TextColor="Black"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
         <Entry
             x:Name="SessionCode"
             WidthRequest="170"
+            TextColor="Black"
             FontFamily="Jersey10"
             HorizontalOptions="Center" />
 
         <Button Margin="10"
             x:Name="Unirse"
             Text="Unirse"
+            TextColor="Black"
             FontFamily="Jersey10"
             Clicked="JoinASession"
             HorizontalOptions="Center" />
