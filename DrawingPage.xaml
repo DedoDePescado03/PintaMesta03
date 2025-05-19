@@ -1,93 +1,105 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-             x:Class="PintaMesta.DrawingPage">
+             x:Class="PintaMesta.DrawingPage"
+             BackgroundColor="#F6F6E9">
 
     <Grid RowDefinitions="Auto, *">
 
-        <!-- Palabra actual -->
         <Label 
             x:Name="CurrentWordLabel"
-            FontSize="Medium"
-            Margin="0,0,0,10"
-            HorizontalOptions="Center"
+            Text="Dibuja: Avión"
+            FontSize="22"
+            FontAttributes="Bold"
+            TextColor="Black"
             FontFamily="Jersey10"
-            Grid.Row="0" />
+            HorizontalOptions="Center"
+            Margin="0,20,0,10" />
 
-        <!-- Contenido principal: Dibujo y herramientas -->
-        <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto">
+        <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Padding="15" ColumnSpacing="15">
 
-            <!-- Lienzo -->
-            <mct:DrawingView
-                x:Name="DrawBoard"
-                BackgroundColor="LightGrey"
-                DrawingLineCompleted="OnDrawn"
-                IsMultiLineModeEnabled="True"
-                WidthRequest="600"
-                HeightRequest="260"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Grid.Column="0" />
+            <Frame HasShadow="True"
+                   CornerRadius="10"
+                   Padding="0"
+                   BackgroundColor="White"
+                   Grid.Column="0"
+                   BorderColor="Transparent"
+                   >
+                <mct:DrawingView
+                    x:Name="DrawBoard"
+                    BackgroundColor="#FAFAFA"
+                    DrawingLineCompleted="OnDrawn"
+                    IsMultiLineModeEnabled="True"
+                    HeightRequest="300"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand" />
+            </Frame>
 
-            <!-- Herramientas del drawer -->
-            <VerticalStackLayout x:Name="DrawerTools"
-                                  Grid.Column="1"
-                                  IsVisible="True">
-                <!-- Cambia esto en C# -->
+            <Frame BackgroundColor="#FFF8DC"
+                   CornerRadius="10"
+                   Padding="15"
+                   Grid.Column="1"
+                   HasShadow="True">
 
-                <Button Margin="10"
-                        x:Name="ClrBtn"
-                        WidthRequest="100"
-                        HeightRequest="35"
-                        BackgroundColor="Red"
-                        Text="Clear"
-                        FontFamily="Jersey10"
-                        Clicked="ClearDrawingView"
-                        VerticalOptions="Start"
-                        HorizontalOptions="End"/>
+                <ScrollView>
+                    <VerticalStackLayout Spacing="15" WidthRequest="160">
 
-                <!-- Paleta de colores -->
-                <Grid Padding="10" ColumnSpacing="10" RowSpacing="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                        <Button Text="Borrar"
+                                x:Name="ClrBtn"
+                                BackgroundColor="#FF6B6B"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontFamily="Jersey10"
+                                Clicked="ClearDrawingView"
+                                CornerRadius="10"
+                                WidthRequest="100"
+                                HorizontalOptions="Center" />
 
-                    <!-- Botones de color -->
-                    <Button Grid.Row="0" Grid.Column="0" BackgroundColor="Red" Clicked="ChangeColor" CommandParameter="Red" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="0" Grid.Column="1" BackgroundColor="Green" Clicked="ChangeColor" CommandParameter="Green" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="0" Grid.Column="2" BackgroundColor="Blue" Clicked="ChangeColor" CommandParameter="Blue" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="1" Grid.Column="0" BackgroundColor="Yellow" Clicked="ChangeColor" CommandParameter="Yellow" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Orange" Clicked="ChangeColor" CommandParameter="Orange" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="1" Grid.Column="2" BackgroundColor="Black" Clicked="ChangeColor" CommandParameter="Black" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="2" Grid.Column="0" BackgroundColor="Purple" Clicked="ChangeColor" CommandParameter="Purple" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="2" Grid.Column="1" BackgroundColor="Pink" Clicked="ChangeColor" CommandParameter="Pink" WidthRequest="30" HeightRequest="30" />
-                    <Button Grid.Row="2" Grid.Column="2" BackgroundColor="Brown" Clicked="ChangeColor" CommandParameter="Brown" WidthRequest="30" HeightRequest="30" />
-                </Grid>
+                        <Label Text="Colores:"
+                               FontAttributes="Bold"
+                               TextColor="Black"
+                               FontFamily="Jersey10"
+                               HorizontalOptions="Center" />
 
-                <Slider x:Name="LineWidthSlider"
-                        Minimum="1"
-                        Maximum="30"
-                        Value="5"
-                        ValueChanged="LineWidthSlider_ValueChanged"
-                        HorizontalOptions="FillAndExpand"
-                        Margin="10" />
+                        <FlexLayout Wrap="Wrap" JustifyContent="Center" AlignItems="Center">
+                            <Button BackgroundColor="#EF476F" Clicked="ChangeColor" CommandParameter="#EF476F" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#FFD166" Clicked="ChangeColor" CommandParameter="#FFD166" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#06D6A0" Clicked="ChangeColor" CommandParameter="#06D6A0" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#118AB2" Clicked="ChangeColor" CommandParameter="#118AB2" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#073B4C" Clicked="ChangeColor" CommandParameter="#073B4C" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#F72585" Clicked="ChangeColor" CommandParameter="#F72585" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#B5179E" Clicked="ChangeColor" CommandParameter="#B5179E" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#7209B7" Clicked="ChangeColor" CommandParameter="#7209B7" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#4361EE" Clicked="ChangeColor" CommandParameter="#4361EE" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                            <Button BackgroundColor="#4CC9F0" Clicked="ChangeColor" CommandParameter="#4CC9F0" WidthRequest="28" HeightRequest="28" CornerRadius="14" />
+                        </FlexLayout>
 
-                <Label x:Name="LineWidthLabel"
-                       Text="Grosor de linea: 5"
-                       HorizontalOptions="Center"
-                       Margin="0,0,0,5" 
-                       FontFamily="Jersey10"/>
-            </VerticalStackLayout>
+                        <Label Text="Grosor de línea:"
+                               FontAttributes="Bold"
+                               FontFamily="Jersey10"
+                               TextColor="Black"
+                               HorizontalOptions="Center"
+                               Margin="0,10,0,0" />
 
+                        <Slider x:Name="LineWidthSlider"
+                                Minimum="1"
+                                Maximum="30"
+                                Value="5"
+                                ValueChanged="LineWidthSlider_ValueChanged"
+                                ThumbColor="Black"
+                                MinimumTrackColor="Gray"
+                                HorizontalOptions="FillAndExpand" />
+
+                        <Label x:Name="LineWidthLabel"
+                               Text="5"
+                               TextColor="Black"
+                               FontFamily="Jersey10"
+                               HorizontalOptions="Center"/>
+                        
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Frame>
         </Grid>
     </Grid>
 </ContentPage>

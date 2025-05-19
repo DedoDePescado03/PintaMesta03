@@ -3,11 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-             x:Class="PintaMesta.GuessingPage">
+             x:Class="PintaMesta.GuessingPage"
+             BackgroundColor="#F6F6E9"
+             >
     <Grid RowDefinitions="Auto, Auto">
 
         <!-- Primera fila: dibujo y adivinanzas -->
-        <Grid x:Name="myGrid" Grid.Row="0" ColumnDefinitions="*, Auto" HeightRequest="260">
+        <Grid x:Name="myGrid"
+              Grid.Row="0"
+              ColumnDefinitions="*, Auto"
+              HeightRequest="260"
+              Margin="0,0,0,10">
             <Frame Padding="0" HasShadow="False" Grid.Column="0">
                 <ContentView x:Name="DrawingContainer" />
             </Frame>
@@ -25,7 +31,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Padding="5" Margin="0,2" HasShadow="False" BorderColor="Red" BackgroundColor="Red">
-                                <Label Text="{Binding}" FontSize="12" />
+                                <Label Text="{Binding}" FontSize="12" FontFamily="Jersey10"/>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -44,8 +50,10 @@
             <Button
                 x:Name="sendGuess"
                 Clicked="SendGuess"
+                FontFamily="Jersey10"
                 Text="Adivinar"
                 WidthRequest="100"
+                FontSize="30"
                 HeightRequest="50"
                 HorizontalOptions="End"/>
         </HorizontalStackLayout>

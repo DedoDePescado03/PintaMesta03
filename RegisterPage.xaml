@@ -2,55 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PintaMesta.RegisterPage"
-             Title="Registrarse">
-    <VerticalStackLayout
-        Padding="0,160">
-        
-        <Label
-            Text="Usuario" 
-            HorizontalOptions="Center"/>
+             Title="Registrarse"
+             BackgroundColor="White">
 
-        <HorizontalStackLayout Padding="100,10,0,0">
+    <ScrollView>
+        <Grid VerticalOptions="CenterAndExpand">
+            <VerticalStackLayout
+                Padding="30"
+                Spacing="25"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
 
-            <Entry
-                x:Name="usernameRegister"
-                WidthRequest="170"
-                HorizontalOptions="Center"/>
-
-        </HorizontalStackLayout>
-
-        <Label
-                Text="Correo"
-                HorizontalOptions="Center"/>
-
-        <HorizontalStackLayout Padding="100,10,0,0">
-
-            <Entry
-                x:Name="emailRegister"
-                WidthRequest="170"
-                VerticalOptions="Center"/>
-
-        </HorizontalStackLayout>
-
-        <Label
-            Text="Contraseña"
-            HorizontalOptions="Center"/>
-
-        <HorizontalStackLayout Padding="100,10,0,0">
+                <Label
+                    Text="Usuario" 
+                    FontFamily="Jersey10"
+                    FontSize="25"
+                    HorizontalOptions="Center"
+                    TextColor="Black"
+                />
 
                 <Entry
-                x:Name="passwordRegister"
-                WidthRequest="170"
-                VerticalOptions="Center"/>
+                    x:Name="usernameRegister"
+                    Placeholder="nombre de usuario"
+                    FontSize="18"
+                    WidthRequest="250"
+                    BackgroundColor="#f0f0f0"
+                    TextColor="Black"
+                    HorizontalOptions="Center" />
 
-        </HorizontalStackLayout>
+                <Label
+                    Text="Correo"
+                    FontFamily="Jersey10"
+                    FontSize="25"
+                    HorizontalOptions="Center"
+                    TextColor="Black"
+                    />
 
-        <Button
-            x:Name="registerBtn"
-            Clicked="RegisterNewUser"
-            Margin="0,20"
-            HorizontalOptions="Center"
-            Text="Registrarse" />
+                <Entry
+                    x:Name="emailRegister"
+                    Placeholder="correo@example.com"
+                    FontSize="18"
+                    WidthRequest="250"
+                    BackgroundColor="#f0f0f0"                    
+                    TextColor="Black"
+                    HorizontalOptions="Center" />
 
-    </VerticalStackLayout>
+                <Label
+                    Text="Contraseña"
+                    FontFamily="Jersey10"
+                    FontSize="25"                    
+                    TextColor="Black"
+                    HorizontalOptions="Center"/>
+
+                <Entry
+                    x:Name="passwordRegister"
+                    Placeholder="••••••••"
+                    FontSize="18"
+                    IsPassword="True"
+                    WidthRequest="250"
+                    BackgroundColor="#f0f0f0"
+                    HorizontalOptions="Center" />
+
+                <Button
+                    x:Name="registerBtn"
+                    Text="Registrarse"
+                    FontFamily="Jersey10"
+                    FontSize="20"
+                    BackgroundColor="#2196F3"
+                    CornerRadius="10"
+                    WidthRequest="200"
+                    Margin="0,20"
+                    Clicked="RegisterNewUser"                    
+                    TextColor="Black"
+                    HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 </ContentPage>

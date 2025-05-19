@@ -2,21 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PintaMesta.JoinSessionPage"
-             Title="Unirse A Una Sesión">
+             Title="Unirse A Una Sesión"
+             BackgroundColor="#F6F6E9"
+             >
     <VerticalStackLayout Padding="0,200">
         <Label 
             Text="Ingresa el código de la sesión"
+            FontFamily="Jersey10"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
         <Entry
             x:Name="SessionCode"
             WidthRequest="170"
+            FontFamily="Jersey10"
             HorizontalOptions="Center" />
 
         <Button Margin="10"
             x:Name="Unirse"
             Text="Unirse"
+            FontFamily="Jersey10"
             Clicked="JoinASession"
             HorizontalOptions="Center" />
     </VerticalStackLayout>

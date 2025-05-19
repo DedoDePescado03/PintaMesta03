@@ -227,25 +227,12 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
 
     private void ChangeColor(object sender, EventArgs e)
     {
-        var button = sender as Button;
-        if (button != null)
+        if (sender is Button button && button.CommandParameter is string hexColor)
         {
-            var colorName = button.CommandParameter.ToString();
-            DrawBoard.LineColor = colorName switch
-            {
-                "Red" => Colors.Red,
-                "Green" => Colors.Green,
-                "Blue" => Colors.Blue,
-                "Yellow" => Colors.Yellow,
-                "Black" => Colors.Black,
-                "Purple" => Colors.Purple,
-                "Orange" => Colors.Orange,
-                "Pink" => Colors.Pink,
-                "Brown" => Colors.Brown,
-                _ => DrawBoard.LineColor
-            };
+            DrawBoard.LineColor = Color.FromArgb(hexColor);
         }
     }
+
 
     private void LineWidthSlider_ValueChanged(object sender, ValueChangedEventArgs e)
     {
