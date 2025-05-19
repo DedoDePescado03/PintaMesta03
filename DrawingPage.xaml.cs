@@ -122,44 +122,6 @@ public partial class DrawingPage : ContentPage, IQueryAttributable
                       .Set(s => s.HasGameEnded, true)
                       .Update();
 
-            // 1. Obtener los userIds de los jugadores
-            var userIds = players.Select(p => p.UserId).ToList();
-
-            // 2. Obtener todos los perfiles (puedes filtrar en memoria)
-            var profilesResponse = await client
-                .From<Profile>()
-                .Get();
-
-            var allProfiles = profilesResponse.Models;
-
-            // 3. Filtrar solo los perfiles necesarios
-            var filteredProfiles = allProfiles
-                .Where(p => userIds.Contains(p.Id))
-                .ToList();
-
-            // 4. Unir score con username
-            var playersWithScores = players
-                .Select(p =>
-                {
-                    var profile = filteredProfiles.FirstOrDefault(pr => pr.Id == p.UserId);
-                    return new PlayerResult
-                    {
-                        Username = profile?.Username ?? "Desconocido",
-                        Score = p.Score
-                    };
-                })
-                .ToList();
-
-            // 5. Guardar la lista en un servicio compartido
-            GameDataService.PlayersWithScores = playersWithScores;
-
-            // 6. Terminar partida
-            await client
-                  .From<Session>()
-                  .Where(s => s.Id == _sessionId)
-                  .Set(s => s.HasGameEnded, true)
-                  .Update();
-
             await Shell.Current.GoToAsync("//MainPage");
             return;
             }
